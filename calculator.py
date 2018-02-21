@@ -1,11 +1,13 @@
 ## Version2 includes sin, cos, and tan buttons. Resetting bugs fixed. 
+## Version3 added radians/degrees option.
 
 from tkinter import *
 import math
 
 
 master = Tk()
-display = Entry(master, width = 12 ,justify = 'right', bd=0, bg= 'lightgray', font = ('Verdana',30))
+display = Entry(master, width = 12 ,justify = 'right', bd=0, bg= 'lightgray', font = ('Verdana',25))
+sort = Button(master, justify = 'center', width = 4, bg= 'lightgray', font = ('Helvetica',20, "italic"), activebackground = 'lightgray')
 
 master.title("Calculator")
 
@@ -26,6 +28,8 @@ class Calculator:
         self.operator = ""
         self.func = ""
         self.symbol = ""
+        self.typ = "rad"
+        sort.config(text=self.typ)
 
     def num_buttons(self, index):
         """
@@ -61,19 +65,37 @@ class Calculator:
             display.insert(0, string = txt)
             self.current = 1
 
+    def sort(self, t):
+        """
+        This method...
+        """
+        if t is 0:
+            self.typ = "deg"
+        elif t is 1:
+            self.typ = "rad"
+            
+        sort.config(text=self.typ)
+        
     def equate(self):
         """
         This method will find what operator we're using and it will add, subtract, multiply or divide based off that.
         It will then update the display.
         """
         if self.func is 0 or self.func is 1 or self.func is 2:
-            #print (self.var2)
-            if self.func is 0: #sine
-                self.result = math.sin(math.radians(float(self.var2)))
-            elif self.func is 1: #cosine
-                self.result = math.cos(math.radians(float(self.var2)))
-            elif self.func is 2: #tangent
-                self.result = math.tan(math.radians(float(self.var2)))
+            if self.typ is "deg":
+                if self.func is 0: #sine
+                    self.result = math.sin(math.radians(float(self.var2)))
+                elif self.func is 1: #cosine
+                    self.result = math.cos(math.radians(float(self.var2)))
+                elif self.func is 2: #tangent
+                    self.result = math.tan(math.radians(float(self.var2)))
+            elif self.typ is "rad":
+                if self.func is 0: #sine
+                    self.result = math.sin(float(self.var2))
+                elif self.func is 1: #cosine
+                    self.result = math.cos(float(self.var2))
+                elif self.func is 2: #tangent
+                    self.result = math.tan(float(self.var2))
         else:
             if self.operator is 0:
                 self.result = float(self.var1) + float(self.var2)
@@ -122,34 +144,36 @@ class Calculator:
 
 calc = Calculator()
 
-b0 = Button(master, text="0", command= lambda: calc.num_buttons(0), width = 4, height= 1,font = ('Comic Sans MS',30))
-b1 = Button(master, text="1", command= lambda: calc.num_buttons(1), width = 4, height= 1,font = ('Comic Sans MS',30))
-b2 = Button(master, text="2", command= lambda: calc.num_buttons(2), width = 4, height= 1,font = ('Comic Sans MS',30))
-b3 = Button(master, text="3", command= lambda: calc.num_buttons(3), width = 4, height= 1,font = ('Comic Sans MS',30))
-b4 = Button(master, text="4", command= lambda: calc.num_buttons(4), width = 4, height= 1,font = ('Comic Sans MS',30))
-b5 = Button(master, text="5", command= lambda: calc.num_buttons(5), width = 4, height= 1,font = ('Comic Sans MS',30))
-b6 = Button(master, text="6", command= lambda: calc.num_buttons(6), width = 4, height= 1,font = ('Comic Sans MS',30))
-b7 = Button(master, text="7", command= lambda: calc.num_buttons(7), width = 4, height= 1,font = ('Comic Sans MS',30))
-b8 = Button(master, text="8", command= lambda: calc.num_buttons(8), width = 4, height= 1,font = ('Comic Sans MS',30))
-b9 = Button(master, text="9", command= lambda: calc.num_buttons(9), width = 4, height= 1,font = ('Comic Sans MS',30))
-pi = Button(master, text="π", command= lambda: calc.num_buttons(round(math.pi, 8)), width = 4, height= 1,font = ('Comic Sans MS',30))
-tau = Button(master, text="tau", command= lambda: calc.num_buttons(round(2*math.pi, 8)), width = 4, height= 1,font = ('Comic Sans MS',30))
-b_dot = Button(master, text=".", command= lambda: calc.num_buttons("."), width = 4, height= 1,font = ('Comic Sans MS',30))
-fix = Button(master, text="", width = 4, height= 1,font = ('Comic Sans MS',30))
-fix2 = Button(master, text="", width = 4, height= 1,font = ('Comic Sans MS',30))
+b0 = Button(master, text="0", command= lambda: calc.num_buttons(0), width = 4, height= 1,font = ('Helvetica',25))
+b1 = Button(master, text="1", command= lambda: calc.num_buttons(1), width = 4, height= 1,font = ('Helvetica',25))
+b2 = Button(master, text="2", command= lambda: calc.num_buttons(2), width = 4, height= 1,font = ('Helvetica',25))
+b3 = Button(master, text="3", command= lambda: calc.num_buttons(3), width = 4, height= 1,font = ('Helvetica',25))
+b4 = Button(master, text="4", command= lambda: calc.num_buttons(4), width = 4, height= 1,font = ('Helvetica',25))
+b5 = Button(master, text="5", command= lambda: calc.num_buttons(5), width = 4, height= 1,font = ('Helvetica',25))
+b6 = Button(master, text="6", command= lambda: calc.num_buttons(6), width = 4, height= 1,font = ('Helvetica',25))
+b7 = Button(master, text="7", command= lambda: calc.num_buttons(7), width = 4, height= 1,font = ('Helvetica',25))
+b8 = Button(master, text="8", command= lambda: calc.num_buttons(8), width = 4, height= 1,font = ('Helvetica',25))
+b9 = Button(master, text="9", command= lambda: calc.num_buttons(9), width = 4, height= 1,font = ('Helvetica',25))
+pi = Button(master, text="π", command= lambda: calc.num_buttons(round(math.pi, 8)), width = 4, height= 1,font = ('Helvetica',25))
+tau = Button(master, text="tau", command= lambda: calc.num_buttons(round(2*math.pi, 8)), width = 4, height= 1,font = ('Helvetica',25))
+b_dot = Button(master, text=".", command= lambda: calc.num_buttons("."), width = 4, height= 1,font = ('Helvetica',25))
+fix = Button(master, text="", width = 4, height= 1,font = ('Helvetica',25))
+fix2 = Button(master, text="", width = 4, height= 1,font = ('Helvetica',25))
 
-plus = Button(master, text="+", command= lambda: calc.set_op(0), width = 4, height= 1,font = ('Comic Sans MS',30))
-minus = Button(master, text="-", command= lambda: calc.set_op(1), width = 4, height= 1,font = ('Comic Sans MS',30))
-times = Button(master, text="x", command= lambda: calc.set_op(2), width = 4, height= 1,font = ('Comic Sans MS',30))
-divide = Button(master, text="÷", command= lambda: calc.set_op(3), width = 4, height= 1,font = ('Comic Sans MS',30))
+plus = Button(master, text="+", command= lambda: calc.set_op(0), width = 4, height= 1,font = ('Helvetica',25))
+minus = Button(master, text="-", command= lambda: calc.set_op(1), width = 4, height= 1,font = ('Helvetica',25))
+times = Button(master, text="x", command= lambda: calc.set_op(2), width = 4, height= 1,font = ('Helvetica',25))
+divide = Button(master, text="÷", command= lambda: calc.set_op(3), width = 4, height= 1,font = ('Helvetica',25))
 
-sin = Button(master, text="sin", command= lambda: calc.trig(0), width = 4, height= 1,font = ('Comic Sans MS',30))
-cos = Button(master, text="cos", command= lambda: calc.trig(1), width = 4, height= 1,font = ('Comic Sans MS',30))
-tan = Button(master, text="tan", command= lambda: calc.trig(2), width = 4, height= 1,font = ('Comic Sans MS',30))
+sin = Button(master, text="sin", command= lambda: calc.trig(0), width = 4, height= 1,font = ('Helvetica',25))
+cos = Button(master, text="cos", command= lambda: calc.trig(1), width = 4, height= 1,font = ('Helvetica',25))
+tan = Button(master, text="tan", command= lambda: calc.trig(2), width = 4, height= 1,font = ('Helvetica',25))
 
-equals = Button(master, text="=", command= calc.equate, width = 4, height= 1,font = ('Comic Sans MS',30))
+deg = Button(master, text="Deg", command= lambda: calc.sort(0), width = 4, height= 1,font = ('Helvetica',25))
+rad = Button(master, text="Rad", command= lambda: calc.sort(1), width = 4, height= 1,font = ('Helvetica',25))
 
-clear = Button(master, text="c", command= calc.clear, width = 4, height= 1,font = ('Comic Sans MS',30))
+equals = Button(master, text="=", command= calc.equate, width = 4, height= 1,font = ('Helvetica',25))
+clear = Button(master, text="c", command= calc.clear, width = 4, height= 1,font = ('Helvetica',25))
 
 # -- Positioning -- #
 
@@ -157,8 +181,9 @@ display.place(x=2, y=2)
 sin.grid(row=1, column=0) 
 cos.grid(row=1, column=1) 
 tan.grid(row=1, column=2) 
-fix.grid(row=5, column=2)
-fix2.grid(row=6, column=2)
+sort.grid(row=5, column=2)
+deg.grid(row=6, column=2)
+rad.grid(row=6, column=3)
 b7.grid(row=2, column=0) 
 b8.grid(row=2, column=1) 
 b9.grid(row=2, column=2) 
