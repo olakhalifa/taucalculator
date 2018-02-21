@@ -1,3 +1,5 @@
+## Version2 includes sin, cos, and tan buttons. Resetting bugs fixed. 
+
 from tkinter import *
 import math
 
@@ -21,7 +23,9 @@ class Calculator:
         self.var2 = ""
         self.result = 0
         self.current = 0
-        self.operator = 0
+        self.operator = ""
+        self.func = ""
+        self.symbol = ""
 
     def num_buttons(self, index):
         """
@@ -36,23 +40,54 @@ class Calculator:
         else:
             self.var2 = str(self.var2) + str(index)
             display.delete(0, END)
-            display.insert(0, string = self.var2)
+            display.insert(0, string = self.var1 + self.symbol + self.var2)
+
+    def trig(self, func):
+        """
+        This method...
+        """      
+        self.func = func
+        if self.func is 0:
+            txt = "sin("
+        elif self.func is 1:
+            txt = "cos("
+        elif self.func is 2:
+            txt = "tan("
+            
+        if self.current is 0:
+            display.delete(0, END)
+            self.var1 = str(txt)
+            display.delete(0, END)
+            display.insert(0, string = txt)
+            self.current = 1
 
     def equate(self):
         """
-        This method willl find what operator we're using and it will add, subtract, multiply or divide based off that.
+        This method will find what operator we're using and it will add, subtract, multiply or divide based off that.
         It will then update the display.
         """
-        if self.operator is 0:
-            self.result = float(self.var1) + float(self.var2)
-        elif self.operator is 1:
-            self.result = float(self.var1) - float(self.var2)
-        elif self.operator is 2:
-            self.result = float(self.var1) * float(self.var2)
-        elif self.operator is 3:
-            self.result = float(self.var1) / float(self.var2)
+        if self.func is 0 or self.func is 1 or self.func is 2:
+            #print (self.var2)
+            if self.func is 0: #sine
+                self.result = math.sin(math.radians(float(self.var2)))
+            elif self.func is 1: #cosine
+                self.result = math.cos(math.radians(float(self.var2)))
+            elif self.func is 2: #tangent
+                self.result = math.tan(math.radians(float(self.var2)))
+        else:
+            if self.operator is 0:
+                self.result = float(self.var1) + float(self.var2)
+            elif self.operator is 1:
+                self.result = float(self.var1) - float(self.var2)
+            elif self.operator is 2:
+                self.result = float(self.var1) * float(self.var2)
+            elif self.operator is 3:
+                self.result = float(self.var1) / float(self.var2)
+
+        self.result = float(str(round(self.result, 8)))
         display.delete(0, END)
         display.insert(0, string = self.result)
+        self.__init__()
 
     def set_op(self, op):
         """
@@ -65,7 +100,19 @@ class Calculator:
         else:
             self.equate()
             self.var2 = ""
-
+            
+        if self.operator is 0:
+            self.symbol = "+"
+        elif self.operator is 1:
+            self.symbol = "-"
+        elif self.operator is 2:
+            self.symbol = "x"
+        elif self.operator is 3:
+            self.symbol = "÷"
+            
+        display.delete(0, END)
+        display.insert(0, string = self.var1 + self.symbol)
+            
     def clear(self):
         """
         This method will clear everything and reset the screen and variables.
@@ -85,8 +132,8 @@ b6 = Button(master, text="6", command= lambda: calc.num_buttons(6), width = 4, h
 b7 = Button(master, text="7", command= lambda: calc.num_buttons(7), width = 4, height= 1,font = ('Comic Sans MS',30))
 b8 = Button(master, text="8", command= lambda: calc.num_buttons(8), width = 4, height= 1,font = ('Comic Sans MS',30))
 b9 = Button(master, text="9", command= lambda: calc.num_buttons(9), width = 4, height= 1,font = ('Comic Sans MS',30))
-pi = Button(master, text="π", command= lambda: calc.num_buttons(math.pi), width = 4, height= 1,font = ('Comic Sans MS',30))
-tau = Button(master, text="tau", command= lambda: calc.num_buttons(2*math.pi), width = 4, height= 1,font = ('Comic Sans MS',30))
+pi = Button(master, text="π", command= lambda: calc.num_buttons(round(math.pi, 8)), width = 4, height= 1,font = ('Comic Sans MS',30))
+tau = Button(master, text="tau", command= lambda: calc.num_buttons(round(2*math.pi, 8)), width = 4, height= 1,font = ('Comic Sans MS',30))
 b_dot = Button(master, text=".", command= lambda: calc.num_buttons("."), width = 4, height= 1,font = ('Comic Sans MS',30))
 fix = Button(master, text="", width = 4, height= 1,font = ('Comic Sans MS',30))
 fix2 = Button(master, text="", width = 4, height= 1,font = ('Comic Sans MS',30))
@@ -96,12 +143,20 @@ minus = Button(master, text="-", command= lambda: calc.set_op(1), width = 4, hei
 times = Button(master, text="x", command= lambda: calc.set_op(2), width = 4, height= 1,font = ('Comic Sans MS',30))
 divide = Button(master, text="÷", command= lambda: calc.set_op(3), width = 4, height= 1,font = ('Comic Sans MS',30))
 
+sin = Button(master, text="sin", command= lambda: calc.trig(0), width = 4, height= 1,font = ('Comic Sans MS',30))
+cos = Button(master, text="cos", command= lambda: calc.trig(1), width = 4, height= 1,font = ('Comic Sans MS',30))
+tan = Button(master, text="tan", command= lambda: calc.trig(2), width = 4, height= 1,font = ('Comic Sans MS',30))
+
 equals = Button(master, text="=", command= calc.equate, width = 4, height= 1,font = ('Comic Sans MS',30))
+
 clear = Button(master, text="c", command= calc.clear, width = 4, height= 1,font = ('Comic Sans MS',30))
 
 # -- Positioning -- #
 
 display.place(x=2, y=2)
+sin.grid(row=1, column=0) 
+cos.grid(row=1, column=1) 
+tan.grid(row=1, column=2) 
 fix.grid(row=5, column=2)
 fix2.grid(row=6, column=2)
 b7.grid(row=2, column=0) 
@@ -115,15 +170,13 @@ b2.grid(row=4, column=1)
 b3.grid(row=4, column=2)
 b0.grid(row=5, column=0) 
 b_dot.grid(row=5, column=1)
-clear.grid(row=1, column=3) 
-plus.grid(row=2, column=3) 
-minus.grid(row=3, column=3) 
-times.grid(row=4, column=3) 
-divide.grid(row=5, column=3) 
-equals.grid(row=6, column=3)
+clear.grid(row=0, column=3) 
+plus.grid(row=1, column=3) 
+minus.grid(row=2, column=3) 
+times.grid(row=3, column=3) 
+divide.grid(row=4, column=3) 
+equals.grid(row=5, column=3)
 pi.grid(row=6, column=0)
 tau.grid(row=6, column=1) 
 
 master.mainloop()
-
-
